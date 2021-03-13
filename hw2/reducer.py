@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 import sys
 import random
 
@@ -8,9 +10,9 @@ tmp = []
 for line in sys.stdin:
     tmp.append(line.rstrip().split("_")[1])
     if len(tmp) == r:
-        print ",".join(tmp)
+        print(",".join(tmp))
         r = random.randint(1, 6)
         tmp = []
 
 if len(tmp) != 0:
-    print ",".join(tmp)
+    print(",".join(tmp))
