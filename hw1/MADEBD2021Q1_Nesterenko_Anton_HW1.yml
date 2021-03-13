@@ -1,0 +1,71 @@
+beginner.how_many_items_in_hdfs:
+    stdin: 9
+intermediate.hdfs_list_recursively:
+    stdin: hdfs dfs -ls -R /data/wiki
+intermediate.hdfs_list_recursively_human_readable:
+    stdin: hdfs dfs -ls -R -h /data/wiki
+intermediate.hdfs_file_replication_factor:
+    stdin: 3
+intermediate.hdfs_folder_replication_factor:
+    stdin: 0
+intermediate.hdfs_describe_size:
+    stdin: actual
+intermediate.hdfs_cumulative_size:
+    stdin: hdfs dfs -du -h -s /data/wiki/
+intermediate.hdfs_create_folder:
+    stdin: hdfs dfs -mkdir anest_fold
+intermediate.hdfs_create_nested_folder:
+    stdin: hdfs dfs -mkdir -p anest_folder/level1/level2/level3
+intermediate.hdfs_remove_nested_folders:
+    stdin: hdfs dfs -rm -R anest_fold
+intermediate.hdfs_trash_behavior:
+    stdin: |-
+        Trash это директория которая помогает предотвратить немедленное удаление файлов, вместо этого файлы при удалении переносятся в нее
+        hdfs dfs -rm -R -skipTrash a.nesterenko
+intermediate.hdfs_create_empty_file:
+    stdin: hdfs dfs -touchz a.nesterenko
+intermediate.hdfs_create_small_file:
+    stdin: |-
+        scp text.txt mail_2021q1@brain-client.bigdatateam.org:anesterenko.txt
+        hdfs dfs -put anesterenko.txt
+intermediate.hdfs_output_file:
+    stdin: hdfs dfs -cat anesterenko.txt
+intermediate.hdfs_output_file_end:
+    stdin: hdfs dfs -tail anesterenko.txt
+intermediate.hdfs_output_file_start:
+    stdin: hdfs dfs -cat anesterenko.txt | head -2
+intermediate.hdfs_tail_vs_unix_tail:
+    stdin: tail -c 1024 anesterenko.txt
+intermediate.hdfs_copy_file:
+    stdin: hdfs dfs -cp anesterenko.txt anesterenko_copy.txt
+intermediate.hdfs_move_file:
+    stdin: |-
+        hdfs dfs -mkdir anesterenko_dir
+        hdfs dfs -mv anesterenko_copy.txt anesterenko_dir
+intermediate.hdfs_download_and_concatenate:
+    stdin: hdfs dfs -getmerge anesterenko.txt anesterenko_dir/anesterenko_copy.txt anesterenko_merged.txt
+advanced.hdfs_set_file_replication:
+    stdin: |-
+        Время на увеличение и уменьшение числа реплик занимает 2-3 секунды
+        hdfs dfs -setrep 4 anesterenko.txt
+advanced.hdfs_get_files_and_block:
+    stdin: hdfs fsck /data/wiki/en_articles -files -blocks -locations
+advanced.hdfs_get_block_information:
+    stdin: hdfs fsck -blockId blk_1073743041
+advanced.hdfs_dfs_architecture:
+    stdin: |-
+        hdfs fsck /data/wiki/en_articles/articles -blocks -files -locations
+        ssh 176.9.53.253
+        hdfs dfs -ls /data/wiki/en_articles
+        hdfs dfs -cat /data/namenode_example/current/fsimage_0000000000030725661 | head -2
+        hdfs dfs -cat /data/namenode_example/current/edits_0000000000030414586-0000000000030725661 | head -2
+advanced.webhdfs_read_100B:
+    stdin: curl -L "http://brain-master:50070/webhdfs/v1/data/stop_words/stop_words_en-xpo6.txt?op=OPEN&length=100"
+advanced.webhdfs_curl_follow_redirects:
+    stdin: curl -L "http://brain-master:50070/webhdfs/v1/data/stop_words/stop_words_en-xpo6.txt?op=OPEN"
+advanced.webhdfs_get_file_detailed_information:
+    stdin: curl -L "http://brain-master:50070/webhdfs/v1/dattop_words/stop_words_en-xpo6.txt?op=GETFILESTATUS"
+advanced.webhdfs_change_file_replication:
+    stdin: curl -i -X PUT "http://brain-master:50070/webhdfs/v1/user/mail_2021q1/anesterenko.txt?op=SETREPLICATION&replication=3&user.name=mail_2021q1"
+advanced.webhdfs_append_to_file:
+    stdin: curl -i -X POST -T test.txt "http://brain-master:50070/webhdfs/v1/user/mail_2021q1/anesterenko.txt?op=APPEND&user.name=mail_2021q1"
