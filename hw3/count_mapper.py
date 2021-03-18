@@ -11,7 +11,7 @@ for line in sys.stdin:
         row = ElementTree.fromstring(line)
         creation_year = row.get("CreationDate")[:4]
         tags = row.get("Tags")
-        if tags and creation_year in {"2010", "2016"}:
+        if tags:
             tags = tags_punkt_re.sub(" ", tags).strip()
             for tag in tags.split():
                 print(creation_year, tag, 1, sep="\t")

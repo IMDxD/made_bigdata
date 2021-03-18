@@ -16,6 +16,7 @@ hdfs dfs -rm -r -skipTrash $HDFS_OUTPUT_DIR
         -D mapreduce.job.output.key.comparator.class=org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator \
         -D mapreduce.partition.keycomparator.options="-k1,1n -k2,2" \
         -D mapreduce.partition.keypartitioner.options=-k1,2 \
+        -numReduceTasks 8 \
         -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \
         -mapper 'python3 count_mapper.py' \
         -combiner 'python3 sum_reducer.py' \
